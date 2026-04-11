@@ -2,6 +2,8 @@ package br.unesp.blog.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -30,6 +32,7 @@ public class Postagem {
     private Pagina conteudo;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
     private Blog blog;
 
     @OneToMany(mappedBy = "postagem", cascade = CascadeType.ALL)

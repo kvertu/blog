@@ -2,6 +2,8 @@ package br.unesp.blog.entity;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,6 +27,7 @@ public class Comentario {
     private Date dataCriacao;
 
     @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    @JsonIgnore
     private Postagem postagem;
 
     public Comentario(Usuario autor, String texto, Date dataCriacao, Postagem postagem) {
