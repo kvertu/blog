@@ -23,7 +23,7 @@ public class Postagem {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Usuario autor;
 
     private String titulo;
@@ -33,7 +33,7 @@ public class Postagem {
     @Embedded
     private Pagina conteudo;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JsonIgnore
     private Blog blog;
 
