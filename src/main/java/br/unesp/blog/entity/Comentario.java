@@ -3,6 +3,7 @@ package br.unesp.blog.entity;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -21,15 +22,15 @@ public class Comentario {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    @ManyToOne(optional = false)
     private Usuario autor;
 
     private String texto;
 
     private Date dataCriacao;
 
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
-    @JsonIgnore
+    @ManyToOne //(optional = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Postagem postagem;
 
     public Comentario(Usuario autor, String texto, Date dataCriacao, Postagem postagem) {

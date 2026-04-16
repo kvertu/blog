@@ -23,7 +23,7 @@ public class Postagem {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     private Usuario autor;
 
     private String titulo;
@@ -33,8 +33,8 @@ public class Postagem {
     @Embedded
     private Pagina conteudo;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JsonIgnore
+    @ManyToOne
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Blog blog;
 
     @OneToMany(mappedBy = "postagem", cascade = CascadeType.ALL)
