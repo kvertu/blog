@@ -22,7 +22,6 @@ import br.unesp.blog.repository.ComentarioRepository;
 public class ComentarioController {
     @Autowired
     private ComentarioRepository comentarioRepository;
-.
 
     @GetMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<Comentario> buscarComentario(@PathVariable Long id) {
