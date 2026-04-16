@@ -15,15 +15,19 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import br.unesp.blog.entity.Blog;
 import br.unesp.blog.entity.Postagem;
+import br.unesp.blog.repository.BlogRepository;
 import br.unesp.blog.repository.PostagemRepository;
 
-// TODO: Incluir o blog no qual a postagem pertence não funciona nos métodos cadastrarPostagem e atualizarPostagem
 @Controller("PostagemController")
 @RequestMapping("/postagem")
 public class PostagemController {
     @Autowired
     private PostagemRepository postagemRepository;
+
+    @Autowired
+    private BlogRepository blogRepository;
 
     @GetMapping("/")
     public ResponseEntity<List<Postagem>> listarPostagens() {
@@ -45,16 +49,25 @@ public class PostagemController {
 
     @PostMapping("/")
     public ResponseEntity<Postagem> cadastrarPostagem(@RequestBody Postagem entity) {
+        resolverBlog(entity);
         Postagem savedPostagem = postagemRepository.save(entity);
-        
+
         return new ResponseEntity<>(savedPostagem, HttpStatus.OK);
     }
-    
+
     @PutMapping("/")
     public ResponseEntity<Postagem> atualizarPostagem(@RequestBody Postagem entity) {
+        resolverBlog(entity);
         Postagem updatedPostagem = postagemRepository.save(entity);
-        
+
         return new ResponseEntity<>(updatedPostagem, HttpStatus.OK);
+    }
+
+    private void resolverBlog(Postagem entity) {
+        if (entity.getBlog() != null && entity.getBlog().getId() != null) {
+            Optional<Blog> blog = blogRepository.findById(entity.getBlog().getId());
+            blog.ifPresent(entity::setBlog);
+        }
     }
 
     @DeleteMapping("/{id}")
