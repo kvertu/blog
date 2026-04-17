@@ -16,6 +16,6 @@ services:
         PGADMIN_DEFAULT_EMAIL: admin@admin.com
         PGADMIN_DEFAULT_PASSWORD: admin
       ports:
-        - "8080:81"
+        - "8081:80"
       depends_on:
         - dsw-projeto-backend
