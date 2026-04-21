@@ -15,6 +15,7 @@ import jakarta.annotation.Nonnull;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -22,6 +23,8 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+// TODO: agora que a camada de segurança foi implementada, várias outras informações repetidas e desnecessárias aparecem ne resultado da requisição dos usuários
 
 @Data
 @Entity
@@ -44,15 +47,15 @@ public class Usuario implements UserDetails {
     @Embedded
     private Telefone celular;
 
-    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnore
     private List<Postagem> postagens = new ArrayList<>();
 
-    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnore
     private List<Comentario> comentarios = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "autores", cascade = CascadeType.PERSIST)
+    @ManyToMany(mappedBy = "autores", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JsonIgnore
     private List<Blog> blogs = new ArrayList<>();
 

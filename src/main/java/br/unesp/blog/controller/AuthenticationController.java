@@ -33,7 +33,6 @@ public class AuthenticationController {
     @Autowired
     private TokenService tokenService;
 
-    // FIXME: endpoint de login ainda não funciona
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid AutenticationDTO data) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.senha());
