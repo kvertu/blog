@@ -26,7 +26,10 @@ public class SecurityConfigurations {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/**").permitAll() // Necessário para que os usuários consigam logar
+                        .requestMatchers(HttpMethod.GET, "/postagem/**").permitAll() // Visualização de postagens
+                        .requestMatchers(HttpMethod.GET, "/blog/**").permitAll() // Visualização de informações do blog
+                        .requestMatchers(HttpMethod.GET, "/comentario/**").permitAll() // Visualização de comentários
                         
                         .anyRequest().authenticated()
                 )
