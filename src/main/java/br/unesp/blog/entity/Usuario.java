@@ -24,8 +24,6 @@ import jakarta.persistence.OneToMany;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-// TODO: agora que a camada de segurança foi implementada, várias outras informações repetidas e desnecessárias aparecem ne resultado da requisição dos usuários
-
 @Data
 @Entity
 @NoArgsConstructor
@@ -37,8 +35,10 @@ public class Usuario implements UserDetails {
     private String nome;
 
     @Nonnull
+    @JsonIgnore // Evitar dados duplicados
     private String login;
     @Nonnull
+    @JsonIgnore // Evitar dados duplicados
     private String senha;
     private UserRole role;
 
