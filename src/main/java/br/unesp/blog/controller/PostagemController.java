@@ -1,8 +1,11 @@
 package br.unesp.blog.controller;
 
+import br.unesp.blog.entity.Blog;
+import br.unesp.blog.entity.Postagem;
+import br.unesp.blog.repository.BlogRepository;
+import br.unesp.blog.repository.PostagemRepository;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,14 +18,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import br.unesp.blog.entity.Blog;
-import br.unesp.blog.entity.Postagem;
-import br.unesp.blog.repository.BlogRepository;
-import br.unesp.blog.repository.PostagemRepository;
-
 @Controller("PostagemController")
 @RequestMapping("/postagem")
+// TODO: Implementar Novas mudanças envolvendo componentes
 public class PostagemController {
+
     @Autowired
     private PostagemRepository postagemRepository;
 
@@ -31,11 +31,13 @@ public class PostagemController {
 
     @GetMapping("/")
     public ResponseEntity<List<Postagem>> listarPostagens() {
-        List<Postagem> postagens = (List<Postagem>) postagemRepository.findAll();
+        List<Postagem> postagens = (List<
+            Postagem
+        >) postagemRepository.findAll();
 
         return new ResponseEntity<>(postagens, HttpStatus.OK);
     }
-    
+
     @GetMapping("/{id}")
     public ResponseEntity<Postagem> listarPostagem(@PathVariable Long id) {
         Optional<Postagem> postagem = postagemRepository.findById(id);
@@ -48,7 +50,9 @@ public class PostagemController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Postagem> cadastrarPostagem(@RequestBody Postagem entity) {
+    public ResponseEntity<Postagem> cadastrarPostagem(
+        @RequestBody Postagem entity
+    ) {
         resolverBlog(entity);
         Postagem savedPostagem = postagemRepository.save(entity);
 
@@ -56,7 +60,9 @@ public class PostagemController {
     }
 
     @PutMapping("/")
-    public ResponseEntity<Postagem> atualizarPostagem(@RequestBody Postagem entity) {
+    public ResponseEntity<Postagem> atualizarPostagem(
+        @RequestBody Postagem entity
+    ) {
         resolverBlog(entity);
         Postagem updatedPostagem = postagemRepository.save(entity);
 
@@ -65,7 +71,9 @@ public class PostagemController {
 
     private void resolverBlog(Postagem entity) {
         if (entity.getBlog() != null && entity.getBlog().getId() != null) {
-            Optional<Blog> blog = blogRepository.findById(entity.getBlog().getId());
+            Optional<Blog> blog = blogRepository.findById(
+                entity.getBlog().getId()
+            );
             blog.ifPresent(entity::setBlog);
         }
     }
