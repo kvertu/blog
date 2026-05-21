@@ -1,8 +1,10 @@
 package br.unesp.blog.controller;
 
+import br.unesp.blog.entity.Blog;
+import br.unesp.blog.entity.Postagem;
+import br.unesp.blog.repository.BlogRepository;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,16 +17,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import br.unesp.blog.entity.Blog;
-import br.unesp.blog.repository.BlogRepository;
-
-
-
-
-
 @Controller("BlogController")
 @RequestMapping("/blog")
 public class BlogController {
+
     @Autowired
     private BlogRepository blogRepository;
 
@@ -34,7 +30,7 @@ public class BlogController {
 
         return new ResponseEntity<>(blogs, HttpStatus.OK);
     }
-    
+
     @GetMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<Blog> listarBlog(@PathVariable Long id) {
         Optional<Blog> blog = blogRepository.findById(id);
@@ -45,18 +41,42 @@ public class BlogController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    
-    @PostMapping(value = "/", consumes = "application/json", produces = "application/json")
+
+    @PostMapping(
+        value = "/",
+        consumes = "application/json",
+        produces = "application/json"
+    )
     public ResponseEntity<Blog> cadastrarBlog(@RequestBody Blog entity) {
+        // Sincroniza o lado inverso da relação
+        // Evita violação de chave estrangeira
+        if (entity.getPostagens() != null) {
+            for (Postagem componente : entity.getPostagens()) {
+                componente.setBlog(entity);
+            }
+        }
+
         Blog savedBlog = blogRepository.save(entity);
-        
+
         return new ResponseEntity<>(savedBlog, HttpStatus.OK);
     }
-    
-    @PutMapping(value = "/", consumes = "application/json", produces = "application/json")
+
+    @PutMapping(
+        value = "/",
+        consumes = "application/json",
+        produces = "application/json"
+    )
     public ResponseEntity<Blog> atualizarBlog(@RequestBody Blog entity) {
+        // Sincroniza o lado inverso da relação
+        // Evita violação de chave estrangeira
+        if (entity.getPostagens() != null) {
+            for (Postagem componente : entity.getPostagens()) {
+                componente.setBlog(entity);
+            }
+        }
+
         Blog updatedBlog = blogRepository.save(entity);
-        
+
         return new ResponseEntity<>(updatedBlog, HttpStatus.OK);
     }
 
