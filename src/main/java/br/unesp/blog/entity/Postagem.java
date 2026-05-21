@@ -9,11 +9,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.List;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class Postagem {
 
@@ -28,13 +30,43 @@ public class Postagem {
 
     private String subtitulo;
 
-    @OneToMany(mappedBy = "postagem", cascade = CascadeType.ALL)
+    @OneToMany(
+        mappedBy = "postagem",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
     private List<Componente> conteudo;
 
     @ManyToOne
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Blog blog;
 
-    @OneToMany(mappedBy = "postagem", cascade = CascadeType.ALL)
+    @OneToMany(
+        mappedBy = "postagem",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
     private List<Comentario> comentarios;
+
+    // setComentarios precisa ser definido manualmente para garantir relação entre os comentarios
+    public void setComentarios(List<Comentario> comentarios) {
+        this.comentarios = comentarios;
+
+        if (comentarios != null) {
+            for (Comentario comentario : comentarios) {
+                comentario.setPostagem(this);
+            }
+        }
+    }
+
+    // setConteudo precisa ser definido manualmente para garantir relação entre os componentes
+    public void setConteudo(List<Componente> conteudo) {
+        this.conteudo = conteudo;
+
+        if (conteudo != null) {
+            for (Componente componente : conteudo) {
+                componente.setPostagem(this);
+            }
+        }
+    }
 }
