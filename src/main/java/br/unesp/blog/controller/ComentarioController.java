@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import br.unesp.blog.entity.Comentario;
 import br.unesp.blog.repository.ComentarioRepository;
+import jakarta.persistence.EntityManager;
 
 
 @Controller("ComentarioController")
@@ -22,6 +24,9 @@ import br.unesp.blog.repository.ComentarioRepository;
 public class ComentarioController {
     @Autowired
     private ComentarioRepository comentarioRepository;
+
+    @Autowired
+    private EntityManager entityManager;
 
     @GetMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<Comentario> buscarComentario(@PathVariable Long id) {
@@ -49,11 +54,12 @@ public class ComentarioController {
     }
 
     @DeleteMapping(value = "/{id}")
+    @Transactional
     public ResponseEntity<Void> deletarComentario(@PathVariable Long id) {
         if (!comentarioRepository.existsById(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        comentarioRepository.deleteById(id);
+        entityManager.createQuery("delete from Comentario c where c.id = :id").setParameter("id", id).executeUpdate();
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
