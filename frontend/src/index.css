@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", "Segoe UI", system-ui, sans-serif;
+
+  --color-brand-50: #f2f1ff;
+  --color-brand-100: #e6e4ff;
+  --color-brand-200: #d1cdff;
+  --color-brand-300: #b2acff;
+  --color-brand-400: #8f83ff;
+  --color-brand-500: #6d5cff;
+  --color-brand-600: #5638f0;
+  --color-brand-700: #472ccb;
+  --color-brand-800: #3a26a3;
+  --color-brand-900: #302282;
+
+  --animate-fade-in: fade-in 0.4s ease-out;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% -20%, rgba(109, 92, 255, 0.16), transparent),
+    #f6f6fb;
+  min-height: 100svh;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: rgba(109, 92, 255, 0.25);
+}
+
+.prose-content p {
+  margin-bottom: 1rem;
+  line-height: 1.75;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: var(--color-brand-300);
+  border-radius: 999px;
+}

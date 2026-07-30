@@ -95,11 +95,13 @@ public class Usuario implements UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public @Nullable String getPassword() {
         return this.getSenha();
     }
 
     @Override
+    @JsonIgnore
     public String getUsername() {
         return this.getLogin();
     }
