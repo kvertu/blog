@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @Entity
@@ -21,6 +22,7 @@ public class Comentario {
     private Long id;
 
     @ManyToOne(optional = false)
+    @ToString.Exclude
     private Usuario autor;
 
     private String texto;
@@ -29,6 +31,7 @@ public class Comentario {
 
     @ManyToOne //(optional = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ToString.Exclude
     private Postagem postagem;
 
     public Comentario(Usuario autor, String texto, Date dataCriacao, Postagem postagem) {

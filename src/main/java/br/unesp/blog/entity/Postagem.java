@@ -14,6 +14,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -24,6 +25,7 @@ public class Postagem {
     private Long id;
 
     @ManyToOne
+    @ToString.Exclude
     private Usuario autor;
 
     private String titulo;
@@ -35,8 +37,10 @@ public class Postagem {
 
     @ManyToOne
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ToString.Exclude
     private Blog blog;
 
     @OneToMany(mappedBy = "postagem", cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<Comentario> comentarios;
 }

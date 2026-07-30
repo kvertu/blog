@@ -23,6 +23,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @Entity
@@ -49,14 +50,17 @@ public class Usuario implements UserDetails {
 
     @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnore
+    @ToString.Exclude
     private List<Postagem> postagens = new ArrayList<>();
 
     @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnore
+    @ToString.Exclude
     private List<Comentario> comentarios = new ArrayList<>();
 
     @ManyToMany(mappedBy = "autores", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JsonIgnore
+    @ToString.Exclude
     private List<Blog> blogs = new ArrayList<>();
 
     // Apenas os campos essenciais para registrar um novo usuário
