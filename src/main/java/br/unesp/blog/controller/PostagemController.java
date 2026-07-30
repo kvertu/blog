@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,7 @@ import br.unesp.blog.entity.Blog;
 import br.unesp.blog.entity.Postagem;
 import br.unesp.blog.repository.BlogRepository;
 import br.unesp.blog.repository.PostagemRepository;
+import jakarta.persistence.EntityManager;
 
 @Controller("PostagemController")
 @RequestMapping("/postagem")
@@ -28,6 +30,9 @@ public class PostagemController {
 
     @Autowired
     private BlogRepository blogRepository;
+
+    @Autowired
+    private EntityManager entityManager;
 
     @GetMapping("/")
     public ResponseEntity<List<Postagem>> listarPostagens() {
@@ -71,8 +76,10 @@ public class PostagemController {
     }
 
     @DeleteMapping("/{id}")
+    @Transactional
     public ResponseEntity<Postagem> deletarPostagem(@PathVariable Long id) {
-        postagemRepository.deleteById(id);
+        entityManager.createQuery("delete from Comentario c where c.postagem.id = :id").setParameter("id", id).executeUpdate();
+        entityManager.createQuery("delete from Postagem p where p.id = :id").setParameter("id", id).executeUpdate();
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
